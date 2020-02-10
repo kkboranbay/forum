@@ -6,7 +6,6 @@ use App\Reply;
 use App\Thread;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ParticipateInThreadTest extends TestCase
