@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,19 +15,26 @@ class CreateThreadTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException('Illuminate\Auth\AuthenticationException');
 
-        $thread = factory('App\Thread')->make();
+        $thread = make('App\Thread');
 
         $this->post('threads', $thread->toArray());
     }
 
     /** @test */
-    public function an_authenticated_user_can_new_create_forum_test()
+    public function guests_cannot_see_the_create_thread_page()
+    {
+        $this->get('threads/create')
+            ->assertRedirect('login');
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_new_create_forum_thread()
     {
         $this->withoutExceptionHandling();
 
-        $this->actingAs(factory(User::class)->create());
+        $this->signIn();
 
-        $thread = factory('App\Thread')->make();
+        $thread = make('App\Thread');
 
         $this->post('threads', $thread->toArray());
 

@@ -26,7 +26,7 @@ class ParticipateInThreadTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->actingAs(create(User::class));
+        $this->signIn();
 
         $thread = create(Thread::class);
         $reply  = make(Reply::class);
