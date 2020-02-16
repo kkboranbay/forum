@@ -20,18 +20,53 @@ class CreateThreadTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_can_new_create_forum_thread()
+    public function an_authenticated_user_can_create_new_forum_threads()
     {
         $this->withoutExceptionHandling();
 
         $this->signIn();
 
-        $thread = create('App\Thread');
+        $thread = create( 'App\Thread');
 
-        $this->post('threads', $thread->toArray());
+        $response = $this->post('threads', $thread->toArray());
 
-        $this->get($thread->path())
+        $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
+    }
+
+    /** @test */
+    public function a_thread_requires_a_title()
+    {
+        $this->publishThreads(['title' => null])
+            ->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+    public function a_thread_requires_a_body()
+    {
+        $this->publishThreads(['body' => null])
+            ->assertSessionHasErrors('body');
+    }
+
+    /** @test */
+    public function a_thread_requires_a_valid_channel()
+    {
+        factory('App\Channel', 2)->create();
+
+        $this->publishThreads(['channel_id' => null])
+            ->assertSessionHasErrors('channel_id');
+
+        $this->publishThreads(['channel_id' => 99])
+            ->assertSessionHasErrors('channel_id');
+    }
+
+    public function publishThreads($overrides = [])
+    {
+        $this->signIn();
+
+        $thread = make('App\Thread', $overrides);
+
+        return $this->post('/threads', $thread->toArray());
     }
 }
