@@ -69,4 +69,5 @@ class CreateThreadTest extends TestCase
 
         return $this->post('/threads', $thread->toArray());
     }
+
 }

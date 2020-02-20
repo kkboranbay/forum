@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
+use App\Filters\ThreadFilters;
 use App\Thread;
 use App\User;
 use Illuminate\Http\Request;
@@ -19,22 +20,13 @@ class ThreadController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Channel $channel
+     * @param ThreadFilters $filters
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel)
+    public function index(Channel $channel, ThreadFilters $filters)
     {
-        if ($channel->exists) {
-            $threads = $channel->threads()->latest();
-        } else {
-            $threads = Thread::latest();
-        }
-
-        if ($username = \request('by')) {
-            $user = User::where('name', $username)->firstOrFail();
-            $threads->where('user_id', $user->id);
-        }
-
-        $threads = $threads->get();
+        $threads = $this->getThreads($channel, $filters);
 
         return view('threads.index', compact('threads'));
     }
@@ -66,9 +58,8 @@ class ThreadController extends Controller
         $thread = Thread::create([
             'user_id'    => auth()->id(),
             'channel_id' => $request->channel_id,
-            'title'   => $request->title,
-            'body'    => $request->body
-
+            'title'      => $request->title,
+            'body'       => $request->body
         ]);
 
         return redirect($thread->path());
@@ -77,7 +68,8 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Thread  $thread
+     * @param integer $channelId
+     * @param  \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
     public function show($channelId, Thread $thread)
@@ -88,8 +80,8 @@ class ThreadController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @param  \App\Thread $thread
+     * @return void
      */
     public function edit(Thread $thread)
     {
@@ -99,9 +91,9 @@ class ThreadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Thread $thread
+     * @return void
      */
     public function update(Request $request, Thread $thread)
     {
@@ -111,11 +103,27 @@ class ThreadController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @param  \App\Thread $thread
+     * @return void
      */
     public function destroy(Thread $thread)
     {
         //
+    }
+
+    /**
+     * @param Channel $channel
+     * @param ThreadFilters $filters
+     * @return mixed
+     */
+    public function getThreads($channel, $filters)
+    {
+        $threads = Thread::latest()->filter($filters);
+
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+
+        return $threads->get();
     }
 }
