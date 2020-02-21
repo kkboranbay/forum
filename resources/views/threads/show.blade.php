@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
@@ -14,34 +14,39 @@
                         {{ $thread->body }}
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                @foreach($thread->replies as $reply)
+                @foreach($replies as $reply)
                     @include('threads.reply')
                 @endforeach
+
+                <div style="padding-top: 20px;">
+                    {{ $replies->links() }}
+                </div>
+
+                @if (auth()->user())
+                    <form method="POST" action="{{ $thread->path() . '/replies' }}" style="padding-top: 20px;">
+                        @csrf
+                        <div class="form-group">
+                            <textarea name="body" rows="5" id="body" class="form-control" placeholder="Having something to say"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" type="submit">Post</button>
+                    </form>
+                @else
+                    <p style="padding-top: 20px;" class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.</p>
+                @endif
             </div>
-        </div>
 
-        @if (auth()->user())
-            <div class="row justify-content-center" style="padding-top: 20px;">
-                <div class="col-md-8" >
-                        <form method="POST" action="{{ $thread->path() . '/replies' }}">
-                            @csrf
-                            <div class="form-group">
-                                <textarea name="body" rows="5" id="body" class="form-control" placeholder="Having something to say"></textarea>
-                            </div>
-
-                            <button class="btn btn-primary" type="submit">Post</button>
-                        </form>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        This thread was published {{ $thread->created_at->diffForHumans() }}
+                        by {{ $thread->creator->name }}, and currently has {{ $thread->replies_count }}
+                        {{ \Illuminate\Support\Str::plural('comment', $thread->replies_count) }}
+                    </div>
                 </div>
             </div>
 
-        @else
-            <p style="padding-top: 20px;" class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.</p>
-        @endif
-
+        </div>
     </div>
 @endsection
