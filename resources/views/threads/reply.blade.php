@@ -1,5 +1,5 @@
 <br>
-<div class="card-header">
+<div id="reply-{{$reply->id}}" class="card-header">
     <div class="level">
         <h6 class="flex">
             <a href="{{ route('profile', $reply->owner->name) }}">{{ $reply->owner->name }}</a> said
