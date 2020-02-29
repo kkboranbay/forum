@@ -14,6 +14,8 @@ class Reply extends Model
 
     protected $with = ['owner', 'favorites'];
 
+    protected $appends = ['favorites_count', 'is_favorited'];
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');

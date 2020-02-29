@@ -1,4 +1,7 @@
 <reply :attributes="{{ $reply }}" inline-template v-cloak>
+
+
+
     <div id="reply-{{$reply->id}}" class="card-body mt-3">
         <div class="level">
             <h6 class="flex">
@@ -7,14 +10,7 @@
             </h6>
 
             <div>
-                <form method="POST" action="/replies/{{$reply->id}}/favorites">
-                    @csrf
-
-                    <button type="submit" class="btn btn-primary" {{ $reply->isFavorited() ? 'disabled' : '' }}>
-                        {{ $reply->favorites_count }}
-                        {{ \Illuminate\Support\Str::plural('Favorite', $reply->favorites_count) }}
-                    </button>
-                </form>
+                <favorite :reply="{{ $reply }}"></favorite>
             </div>
         </div>
 
