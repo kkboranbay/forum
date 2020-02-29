@@ -3,8 +3,6 @@
 namespace App\Traits;
 
 
-use App\Activity;
-
 trait RecordsActivity
 {
     protected static function bootRecordsActivity()

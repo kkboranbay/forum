@@ -9,9 +9,11 @@
                 {{ $reply->created_at->diffForHumans() }}...
             </h6>
 
+            @if (\Illuminate\Support\Facades\Auth::check())
             <div>
                 <favorite :reply="{{ $reply }}"></favorite>
             </div>
+            @endif
         </div>
 
         <div class="card">
