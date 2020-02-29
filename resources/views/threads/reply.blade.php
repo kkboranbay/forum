@@ -1,4 +1,4 @@
-<reply inline-template>
+<reply :attributes="{{ $reply }}" inline-template v-cloak>
     <div id="reply-{{$reply->id}}" class="card-body mt-3">
         <div class="level">
             <h6 class="flex">
@@ -20,12 +20,14 @@
 
         <div class="card">
             <div class="card-body" v-if="editing">
-                <textarea></textarea>
+                <div class="form-group">
+                    <textarea class="form-control" v-model="body"></textarea>
+                </div>
+                <button class="btn-success small" @click="update">Update</button>
+                <button class="btn small" @click="editing=false">Cancel</button>
             </div>
 
-            <div class="card-body" v-else>
-                {{ $reply->body }}
-            </div>
+            <div class="card-body" v-else v-text="body"></div>
         </div>
 
 
