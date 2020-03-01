@@ -1,7 +1,4 @@
 <reply :attributes="{{ $reply }}" inline-template v-cloak>
-
-
-
     <div id="reply-{{$reply->id}}" class="card-body mt-3">
         <div class="level">
             <h6 class="flex">
@@ -36,7 +33,6 @@
                 <button class="btn-danger mr-2" @click="destroy">Delete</button>
             </div>
         @endcan
-
     </div>
 </reply>
 
