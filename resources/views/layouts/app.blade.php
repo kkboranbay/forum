@@ -12,6 +12,13 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+    <script>
+        window.App = {!! json_encode([
+            'user' => \Illuminate\Support\Facades\Auth::user(),
+            'signedIn' => \Illuminate\Support\Facades\Auth::check()
+        ]) !!};
+    </script>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -21,6 +28,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <style>
+
+
         body {
             padding-bottom: 100px;
         }

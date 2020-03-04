@@ -7,9 +7,9 @@
             </h6>
 
             <!--@if (\Illuminate\Support\Facades\Auth::check())-->
-            <!--<div>-->
-                <!--<favorite :reply="{{ $reply }}"></favorite>-->
-            <!--</div>-->
+            <div v-if="signedIn">
+                <favorite :reply="data"></favorite>
+            </div>
             <!--@endif-->
         </div>
 
@@ -27,7 +27,7 @@
 
 
         <!--@can('update', $reply)-->
-        <div class="card-footer level">
+        <div class="card-footer level" v-if="canUpdate">
             <button class="btn-dark mr-2" @click="editing = true">Edit</button>
             <button class="btn-danger mr-2" @click="destroy">Delete</button>
         </div>
@@ -53,6 +53,15 @@
             };
         },
 
+        computed: {
+            signedIn() {
+                return window.App.signedIn
+            },
+            canUpdate() {
+                return this.authorize(user => this.data.user_id == user.id)
+            }
+        },
+
         methods: {
             update() {
                 axios.patch('/replies/' + this.data.id, {
@@ -68,8 +77,6 @@
                 axios.delete('/replies/' + this.data.id);
 
                 this.$emit('deleted', this.data.id)
-
-                flash('Reply was deleted')
 
                 // $(this.$el).fadeOut(400, () => {
                 //     flash('Your reply has been deleted');

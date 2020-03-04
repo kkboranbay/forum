@@ -8,6 +8,13 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+Vue.prototype.authorize = function (handler) {
+    let user = window.App.user;
+
+    return user ? handler(user) : false;
+};
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -30,7 +37,6 @@ Vue.component('thread-view', require('./pages/Thread.vue').default);
 
 window.events = new Vue();
 window.flash = function(message) {
-    window.events.$emit('flash', message);
     window.events.$emit('flash', message);
 };
 
