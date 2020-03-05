@@ -3,14 +3,12 @@
         <div class="level">
             <h6 class="flex">
                 <a :href="'profiles/'+data.owner.name" v-text="data.owner.name"></a> said
-                {{ data.owner.created_at }}...
+                <span v-text="ago"></span>
             </h6>
 
-            <!--@if (\Illuminate\Support\Facades\Auth::check())-->
             <div v-if="signedIn">
                 <favorite :reply="data"></favorite>
             </div>
-            <!--@endif-->
         </div>
 
         <div class="card">
@@ -26,17 +24,16 @@
         </div>
 
 
-        <!--@can('update', $reply)-->
         <div class="card-footer level" v-if="canUpdate">
             <button class="btn-dark mr-2" @click="editing = true">Edit</button>
             <button class="btn-danger mr-2" @click="destroy">Delete</button>
         </div>
-        <!--@endcan-->
     </div>
 </template>
 
 <script>
     import Favorite from './Favorite';
+    import moment from 'moment';
 
     export default {
         props: ['data'],
@@ -54,6 +51,9 @@
         },
 
         computed: {
+            ago() {
+                return moment(this.data.created_at).fromNow() + '...'
+            },
             signedIn() {
                 return window.App.signedIn
             },
