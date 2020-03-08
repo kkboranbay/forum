@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Reply;
+use App\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -81,5 +82,18 @@ class ReadThreadTest extends TestCase
         $response = $this->getJson('threads?popular=1')->json();
 
         $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
+    }
+
+    /** @test */
+    public function a_user_can_request_all_replies_for_a_given_thread()
+    {
+        $thread = create(Thread::class);
+
+        create('App\Reply', ['thread_id' => $thread->id], 2);
+
+        $response = $this->get($thread->path() . '/replies')->json();
+
+        $this->assertCount(1, $response['data']);
+        $this->assertEquals(2,  $response['total']);
     }
 }
