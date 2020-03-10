@@ -40,6 +40,10 @@
                             by {{ $thread->creator->name }}, and currently has <span v-text="repliesCount"></span>
                             {{ \Illuminate\Support\Str::plural('comment', $thread->replies_count) }}
                         </div>
+
+                        <p>
+                            <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
+                        </p>
                     </div>
                 </div>
 
