@@ -20,6 +20,7 @@ Route::post('replies/{reply}/favorites', 'FavoriteController@store');
 Route::delete('replies/{reply}/favorites', 'FavoriteController@destroy');
 Route::delete('replies/{reply}', 'ReplyController@destroy');
 Route::patch('replies/{reply}', 'ReplyController@update');
+Route::post('threads/{channel}/{thread}/subscription', 'ThreadSubscriptionController@store');
 
 Route::get('profiles/{user}', 'ProfileController@show')->name('profile');
 
