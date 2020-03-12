@@ -24,6 +24,8 @@ Route::post('threads/{channel}/{thread}/subscription', 'ThreadSubscriptionContro
 Route::delete('threads/{channel}/{thread}/subscription', 'ThreadSubscriptionController@destroy');
 
 Route::get('profiles/{user}', 'ProfileController@show')->name('profile');
+Route::get('profiles/{user}/notifications', 'UserNotificationController@index');
+Route::delete('profiles/{user}/notifications/{notification}', 'UserNotificationController@destroy');
 
 Auth::routes();
 

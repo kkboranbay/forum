@@ -18,7 +18,7 @@ class ReplyPolicy
      */
     public function viewAny(User $user)
     {
-        //
+
     }
 
     /**
@@ -30,7 +30,7 @@ class ReplyPolicy
      */
     public function view(User $user, Reply $reply)
     {
-        //
+        //ss
     }
 
     /**
