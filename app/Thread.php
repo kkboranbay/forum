@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Filters\ThreadFilters;
-use App\Notifications\ThreadWasUpdated;
 use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 
