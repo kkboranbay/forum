@@ -5,6 +5,7 @@ namespace App;
 use App\Filters\ThreadFilters;
 use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Thread extends Model
 {
@@ -98,5 +99,16 @@ class Thread extends Model
         return $this->subscriptions()
             ->where('user_id', auth()->id())
             ->exists();
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function hasUpdatesFor($user)
+    {
+        $key = $user->visitedThreadCacheKey($this);
+
+        return $this->updated_at > Cache::get($key);
     }
 }
