@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Reply;
 use App\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -67,8 +66,6 @@ class ReadThreadTest extends TestCase
 
         $threadWithThreeReplies = create('App\Thread');
         create('App\Reply', ['thread_id' => $threadWithThreeReplies->id], 3);
-
-        $threadWithNoReplies = $this->thread;
 
         $response = $this->getJson('threads?popular=1')->json();
 
