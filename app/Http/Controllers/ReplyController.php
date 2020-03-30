@@ -21,27 +21,39 @@ class ReplyController extends Controller
 
     public function store(Request $request, $channel, Thread $thread)
     {
-        $this->validateReply();
+        try {
 
-        $reply = $thread->addReply([
-            'body'    => $request->body,
-            'user_id' => auth()->id(),
-        ]);
+            $this->validateReply();
 
-        if (\request()->expectsJson()) {
-            return response()->json($reply->load('owner'));
+            $reply = $thread->addReply([
+                'body'    => $request->body,
+                'user_id' => auth()->id(),
+            ]);
+
+        } catch (\Exception $e) {
+            return response(
+                'Sorry, your reply could not be saved at this time.', 422
+            );
         }
 
-        return back()->with('flash', 'You reply has been left');
+        return response()->json($reply->load('owner'));
     }
 
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
 
-        $this->validateReply();
+        try {
+            $this->validateReply();
 
-        $reply->update(\request(['body']));
+            $reply->update(\request(['body']));
+
+        } catch (\Exception $e) {
+            return response(
+                'Sorry, your reply could not be saved at this time.', 422
+            );
+        }
+
     }
 
     public function destroy(Reply $reply)

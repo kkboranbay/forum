@@ -6,9 +6,7 @@ use App\Channel;
 use App\Filters\ThreadFilters;
 use App\Inspections\Spam;
 use App\Thread;
-use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ThreadController extends Controller
 {
