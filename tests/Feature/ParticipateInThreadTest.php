@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Reply;
 use App\Thread;
-use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -45,9 +44,8 @@ class ParticipateInThreadTest extends TestCase
         $reply  = make('App\Reply', ['body' => null]);
 
         $this->post($thread->path() . '/replies', $reply->toArray())
-            ->assertSessionHasErrors('body');
+            ->assertStatus(422);
     }
-
 
     /** @test */
     public function unauthorized_users_cannot_delete_replies()
@@ -117,8 +115,25 @@ class ParticipateInThreadTest extends TestCase
             'body' => 'Customer support'
         ]);
 
-        $this->expectException(\Exception::class);
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
+    }
 
-        $this->post($thread->path() . '/replies', $reply->toArray());
+    /** @test */
+    public function users_may_only_reply_a_maximum_of_once_per_minute()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+
+        $thread = create('App\Thread');
+
+        $reply  = make(Reply::class);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(200);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(429);
     }
 }
