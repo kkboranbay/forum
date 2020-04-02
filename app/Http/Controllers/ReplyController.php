@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateReplyRequest;
+use App\Notifications\YouWereMentioned;
 use App\Reply;
 use App\Thread;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use App\User;
 
 class ReplyController extends Controller
 {
@@ -26,6 +26,18 @@ class ReplyController extends Controller
             'body'    => $request->body,
             'user_id' => auth()->id(),
         ])->load('owner');
+
+        preg_match_all('/\@([^\s]+)/', $request->body, $matches);
+
+        $names = $matches[1];
+
+        foreach ($names as $name) {
+            $user = User::whereName($name)->first();
+
+            if ($user) {
+                $user->notify(new YouWereMentioned($reply));
+            }
+        }
 
         return response()->json($reply);
     }
