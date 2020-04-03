@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateReplyRequest;
-use App\Notifications\YouWereMentioned;
 use App\Reply;
 use App\Thread;
-use App\User;
 
 class ReplyController extends Controller
 {
@@ -22,31 +20,21 @@ class ReplyController extends Controller
 
     public function store(CreateReplyRequest $request, $channel, Thread $thread)
     {
-        $reply = $thread->addReply([
+        return $thread->addReply([
             'body'    => $request->body,
             'user_id' => auth()->id(),
         ])->load('owner');
-
-        return response()->json($reply);
     }
 
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
 
-        try {
-            \request()->validate([
-                'body' => 'required|spamfree'
-            ]);
+        \request()->validate([
+            'body' => 'required|spamfree'
+        ]);
 
-            $reply->update(\request(['body']));
-
-        } catch (\Exception $e) {
-            return response(
-                'Sorry, your reply could not be saved at this time.', 422
-            );
-        }
-
+        $reply->update(\request(['body']));
     }
 
     public function destroy(Reply $reply)

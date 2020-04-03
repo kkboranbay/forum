@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Filters\ThreadFilters;
-use App\Inspections\Spam;
 use App\Thread;
 use Illuminate\Http\Request;
 

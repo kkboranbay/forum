@@ -13,11 +13,13 @@
 
         <div class="card">
             <div class="card-body" v-if="editing">
-                <div class="form-group">
-                    <textarea class="form-control" v-model="body"></textarea>
-                </div>
-                <button class="btn-success small" @click="update">Update</button>
-                <button class="btn small" @click="editing=false">Cancel</button>
+                <form @submit="update">
+                    <div class="form-group">
+                        <textarea class="form-control" v-model="body" required></textarea>
+                    </div>
+                    <button class="btn-success small">Update</button>
+                    <button class="btn small" @click="editing=false" type="button">Cancel</button>
+                </form>
             </div>
 
             <div class="card-body" v-else v-text="body"></div>
