@@ -2,13 +2,15 @@
     <div>
         <div v-if="signedIn">
             <div class="form-group">
-                <textarea name="body"
-                          rows="5"
-                          id="body"
-                          class="form-control"
-                          required
-                          v-model="body"
-                          placeholder="Having something to say"></textarea>
+                <vue-tribute :options="options">
+                    <textarea name="body"
+                              rows="5"
+                              id="body"
+                              class="form-control"
+                              required
+                              v-model="body"
+                              placeholder="Having something to say"></textarea>
+                </vue-tribute>
             </div>
 
             <button class="btn btn-primary"
@@ -23,10 +25,32 @@
 </template>
 
 <script>
+    import VueTribute from 'vue-tribute'
+
     export default {
+
+        components: {
+            VueTribute
+        },
+
         data() {
             return {
                 body: '',
+                options: {
+                    trigger: "@",
+                    values: function (text, cb) {
+                        axios.get('/api/users?name='+text)
+                            .then((data) => {
+                                if (data.status === 200) {
+                                    cb(data.data)
+                                } else if (data.status === 403) {
+                                    cb([]);
+                                }
+                            })
+                    },
+                    lookup: 'name',
+                    fillAttr: 'name',
+                }
             }
         },
 
@@ -52,8 +76,38 @@
 
                         this.$emit('created', data)
                     })
-            }
-        }
+            },
+        },
 
     }
 </script>
+
+<style>
+    html,
+    body {
+        height: 100vh;
+        width: 100vw;
+    }
+    .tribute-container ul {
+        margin: 0;
+        margin-top: 5px;
+        padding: 0;
+        list-style: none;
+        background: #fff;
+        border-radius: 4px;
+        border: 1px solid rgba(#000, 0.13);
+        background-clip: padding-box;
+        overflow: hidden;
+    }
+    .tribute-container li {
+        color: #3f5efb;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .tribute-container li.highlight,
+    .tribute-container li:hover {
+        background: #3f5efb;
+        color: #fff;
+    }
+</style>
