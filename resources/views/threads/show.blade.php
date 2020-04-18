@@ -14,7 +14,7 @@
                         <div class="card-header">
                             <div class="level">
                                     <img
-                                            src="{{ $thread->creator->avatar() }}"
+                                            src="{{ $thread->creator->avatar_path }}"
                                             alt=""
                                             width="30"
                                             height="30"

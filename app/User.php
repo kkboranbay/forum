@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -71,10 +72,12 @@ class User extends Authenticatable
         );
     }
 
-    public function avatar()
+    public function getAvatarPathAttribute($avatar)
     {
-        $path = $this->avatar_path ?: 'avatars/default.png';
+        return asset(Storage::url($avatar ?: 'avatars/default.png'));
 
-        return '/storage/' . $path;
+//        $path = $avatar ?: 'avatars/default.png';
+//
+//        return '/storage/' . $path;
     }
 }
