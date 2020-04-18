@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,5 +19,17 @@ class UserTest extends TestCase
         $reply = create('App\Reply', ['user_id' => $user->id]);
 
         $this->assertEquals($reply->id, $user->lastReply->id);
+    }
+
+    /** @test */
+    public function a_user_can_determine_their_avatar_path()
+    {
+        $user = create(User::class);
+
+        $this->assertEquals('/storage/avatars/default.png', $user->avatar());
+
+        $user->avatar_path = 'avatars/me.png';
+
+        $this->assertEquals('/storage/avatars/me.png', $user->avatar());
     }
 }

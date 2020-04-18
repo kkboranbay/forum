@@ -70,4 +70,11 @@ class User extends Authenticatable
             Carbon::now()
         );
     }
+
+    public function avatar()
+    {
+        $path = $this->avatar_path ?: 'avatars/default.png';
+
+        return '/storage/' . $path;
+    }
 }
