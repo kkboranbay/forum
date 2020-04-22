@@ -29,6 +29,6 @@ trait RecordVisits
     protected function visitsCacheKey()
     {
         $className = strtolower(class_basename($this));
-        return "{$className}.{$this->id}.visits";
+//        return "{$className}.{$this->id}.visits";
     }
 }

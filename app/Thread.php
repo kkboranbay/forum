@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class Thread extends Model
 {
-    use RecordsActivity, RecordVisits;
+    use RecordsActivity;
 
     protected $guarded = [];
 
@@ -104,5 +104,10 @@ class Thread extends Model
         $key = $user->visitedThreadCacheKey($this);
 
         return $this->updated_at > Cache::get($key);
+    }
+
+    public function visits()
+    {
+        return new Visits($this);
     }
 }
