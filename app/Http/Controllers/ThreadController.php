@@ -7,7 +7,6 @@ use App\Filters\ThreadFilters;
 use App\Thread;
 use App\Trending;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 
 class ThreadController extends Controller
 {
@@ -87,6 +86,8 @@ class ThreadController extends Controller
 
         $trending->push($thread);
 
+        $thread->recordVisits();
+
         return view('threads.show', [
             'thread'  => $thread,
         ]);
@@ -100,7 +101,7 @@ class ThreadController extends Controller
      */
     public function edit(Thread $thread)
     {
-        //
+
     }
 
     /**

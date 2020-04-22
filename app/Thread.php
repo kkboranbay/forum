@@ -5,12 +5,13 @@ namespace App;
 use App\Events\ThreadReceivedNewReply;
 use App\Filters\ThreadFilters;
 use App\Traits\RecordsActivity;
+use App\Traits\RecordVisits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class Thread extends Model
 {
-    use RecordsActivity;
+    use RecordsActivity, RecordVisits;
 
     protected $guarded = [];
 
