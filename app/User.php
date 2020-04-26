@@ -37,6 +37,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'confirmed'         => 'boolean',
     ];
 
     public function getRouteKeyName()
@@ -71,6 +72,14 @@ class User extends Authenticatable
             Carbon::now()
         );
     }
+
+    public function confirm()
+    {
+        $this->confirmed = true;
+
+        $this->save();
+    }
+
 
     public function getAvatarPathAttribute($avatar)
     {

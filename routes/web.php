@@ -4,7 +4,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 //Route::resource('threads', 'ThreadController');
 
 Route::get('home', 'HomeController@index');
@@ -29,6 +28,9 @@ Route::delete('profiles/{user}/notifications/{notification}', 'UserNotificationC
 
 Route::get('api/users', 'Api\UserController@index');
 Route::post('api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');
+
+Route::get('/register/confirm', 'Api\RegisterConfirmationController@index');
+
 
 Auth::routes();
 
