@@ -18,7 +18,11 @@ Route::get('threads/{channel}', 'ThreadController@index');
 Route::post('replies/{reply}/favorites', 'FavoriteController@store');
 Route::delete('replies/{reply}/favorites', 'FavoriteController@destroy');
 Route::delete('replies/{reply}', 'ReplyController@destroy');
+
+Route::post('replies/{reply}/best', 'BestReplyController@store')->name('best-reply.store');
+
 Route::patch('replies/{reply}', 'ReplyController@update');
+
 Route::post('threads/{channel}/{thread}/subscription', 'ThreadSubscriptionController@store');
 Route::delete('threads/{channel}/{thread}/subscription', 'ThreadSubscriptionController@destroy');
 

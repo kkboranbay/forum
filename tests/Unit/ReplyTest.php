@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Reply;
+use App\Thread;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -53,5 +54,17 @@ class ReplyTest extends TestCase
             "Hi, <a href='/profiles/Leo-Lee'>@Leo-Lee</a>",
             $reply->body
         );
+    }
+
+    /** @test */
+    public function it_knows_if_it_is_the_best_reply()
+    {
+        $reply = create(Reply::class);
+
+        $this->assertFalse($reply->isBest());
+
+        $reply->thread->update(['best_reply_id' => $reply->id]);
+
+        $this->assertTrue($reply->fresh()->isBest());
     }
 }

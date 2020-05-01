@@ -123,7 +123,6 @@ class CreateThreadTest extends TestCase
         $thread = create('App\Thread', ['user_id' => auth()->id()]);
         $reply  = create('App\Reply', ['thread_id' => $thread->id]);
 
-        $this->post($thread->path());
         $response = $this->json('DELETE', $thread->path());
 
         $response->assertStatus(204);
