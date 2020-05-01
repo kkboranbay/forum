@@ -55,20 +55,37 @@ class CreateThreadTest extends TestCase
     {
         $this->signIn();
 
+        create(Thread::class, [], 2);
+
         $thread = create(Thread::class, [
             'title' => 'Test',
-            'slug'  => 'test'
         ]);
 
         $this->assertEquals($thread->slug, 'test');
 
-        $this->post(route('threads'), $thread->toArray());
+        $thread2 = $this->postJson(route('threads'), $thread->toArray())->json();
 
-        $this->assertTrue(Thread::whereSlug('test-2')->exists());
+        $this->assertEquals($thread2["slug"], "test-{$thread2['id']}");
 
-        $this->post(route('threads'), $thread->toArray());
+        $thread3 = $this->postJson(route('threads'), $thread->toArray())->json();
 
-        $this->assertTrue(Thread::whereSlug('test-3')->exists());
+        $this->assertEquals($thread3["slug"], "test-{$thread3['id']}");
+    }
+
+    /** @test */
+    public function a_thread_with_a_title_that_ends_in_a_number_should_generate_the_proper_slug()
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class, [
+            'title' => 'Test 2',
+        ]);
+
+        $this->assertEquals($thread->slug, 'test-2');
+
+        $thread2 = $this->postJson(route('threads'), $thread->toArray())->json();
+
+        $this->assertEquals("test-2-{$thread2['id']}", $thread2['slug']);
     }
 
     /** @test */
@@ -106,6 +123,7 @@ class CreateThreadTest extends TestCase
         $thread = create('App\Thread', ['user_id' => auth()->id()]);
         $reply  = create('App\Reply', ['thread_id' => $thread->id]);
 
+        $this->post($thread->path());
         $response = $this->json('DELETE', $thread->path());
 
         $response->assertStatus(204);
