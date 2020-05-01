@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Activity;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,20 +15,18 @@ class CreateThreadTest extends TestCase
     public function guests_may_not_create_threads()
     {
         $this->get('threads/create')
-            ->assertRedirect('login');
+            ->assertRedirect(route('login'));
 
         $this->post('threads')
-            ->assertRedirect('login');
+            ->assertRedirect(route('login'));
     }
 
     /** @test */
     public function an_authenticated_user_can_create_new_forum_threads()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
-        $thread = create( 'App\Thread');
+        $thread = make( 'App\Thread');
 
         $response = $this->post('threads', $thread->toArray());
 
@@ -98,8 +97,14 @@ class CreateThreadTest extends TestCase
     /** @test */
     public function authenticated_user_must_first_confirm_their_email_address_before_creating_threads()
     {
-        $this->publishThreads()
-            ->assertRedirect('/threads')
+        $user = factory(User::class)->state('unconfirmed')->create();
+
+        $this->signIn($user);
+
+        $thread = make('App\Thread');
+
+        $this->post('/threads', $thread->toArray())
+            ->assertRedirect(route('threads'))
             ->assertSessionHas('flash', 'You must first confirm your email address.');
     }
 

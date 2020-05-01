@@ -8,11 +8,16 @@ use Illuminate\Http\Request;
 
 class RegisterConfirmationController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function index()
     {
-        User::where('confirmation_token', \request('token'))
-            ->firstOrFail()
-            ->confirm();
+        $user = User::where('confirmation_token', \request('token'))->first();
+
+        if (! $user) return redirect(route('threads'))->with('flash', 'Unknown token.');
+
+        $user->confirm();
 
         return redirect('/threads')
             ->with('flash', 'Your account is now confirmed! You may post to the forum.');
