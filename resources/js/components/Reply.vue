@@ -27,7 +27,7 @@
 
 
         <div class="card-footer level">
-            <div v-if="canUpdate">
+            <div v-if="authorize('updateReply', reply)">
                 <button class="btn-dark mr-2" @click="editing = true">Edit</button>
                 <button class="btn-danger mr-2" @click="destroy">Delete</button>
             </div>
@@ -53,7 +53,8 @@
                 editing: false,
                 id: this.data.id,
                 body: this.data.body,
-                isBest: false
+                isBest: false,
+                reply: this.data
             };
         },
 
@@ -61,12 +62,6 @@
             ago() {
                 return moment(this.data.created_at).fromNow() + '...'
             },
-            signedIn() {
-                return window.App.signedIn
-            },
-            canUpdate() {
-                return this.authorize(user => this.data.user_id == user.id)
-            }
         },
 
         methods: {

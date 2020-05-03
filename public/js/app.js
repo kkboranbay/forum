@@ -2168,11 +2168,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
-  computed: {
-    signedIn: function signedIn() {
-      return window.App.signedIn;
-    }
-  },
   methods: {
     addReply: function addReply() {
       var _this = this;
@@ -2376,22 +2371,13 @@ __webpack_require__.r(__webpack_exports__);
       editing: false,
       id: this.data.id,
       body: this.data.body,
-      isBest: false
+      isBest: false,
+      reply: this.data
     };
   },
   computed: {
     ago: function ago() {
       return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.data.created_at).fromNow() + '...';
-    },
-    signedIn: function signedIn() {
-      return window.App.signedIn;
-    },
-    canUpdate: function canUpdate() {
-      var _this = this;
-
-      return this.authorize(function (user) {
-        return _this.data.user_id == user.id;
-      });
     }
   },
   methods: {
@@ -56679,7 +56665,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-footer level" }, [
-        _vm.canUpdate
+        _vm.authorize("updateReply", _vm.reply)
           ? _c("div", [
               _c(
                 "button",
@@ -69070,10 +69056,23 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-Vue.prototype.authorize = function (handler) {
-  var user = window.App.user;
-  return user ? handler(user) : false;
+var authorization = __webpack_require__(/*! ./authorization */ "./resources/js/authorization.js");
+
+Vue.prototype.authorize = function () {
+  if (!window.App.signedIn) return false;
+
+  for (var _len = arguments.length, params = new Array(_len), _key = 0; _key < _len; _key++) {
+    params[_key] = arguments[_key];
+  }
+
+  if (typeof params[0] === 'string') {
+    return authorization[params[0]](params[1]);
+  }
+
+  return params[0](window.App.user);
 };
+
+Vue.prototype.signedIn = window.App.signedIn;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -69083,7 +69082,6 @@ Vue.prototype.authorize = function (handler) {
  */
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 
 Vue.component('flash', __webpack_require__(/*! ./components/Flash.vue */ "./resources/js/components/Flash.vue")["default"]);
 Vue.component('thread-view', __webpack_require__(/*! ./pages/Thread.vue */ "./resources/js/pages/Thread.vue")["default"]);
@@ -69109,6 +69107,22 @@ window.flash = function (message) {
 var app = new Vue({
   el: '#app'
 });
+
+/***/ }),
+
+/***/ "./resources/js/authorization.js":
+/*!***************************************!*\
+  !*** ./resources/js/authorization.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var user = window.App.user;
+module.exports = {
+  updateReply: function updateReply(reply) {
+    return reply.user_id === user.id;
+  }
+};
 
 /***/ }),
 
