@@ -1,5 +1,5 @@
 <template>
-    <div :id="'reply-'+id" class="card card-body mt-3" :class="isBest ? 'card-body bg-success' : 'card-body'">
+    <div :id="'reply-'+id" class="card card-body mt-3" :class="isBest ? 'card-body border-success' : 'card-body'">
         <div class="level">
             <h6 class="flex">
                 <a :href="'profiles/'+data.owner.name" v-text="data.owner.name" class="ml-3"></a> said
@@ -53,7 +53,7 @@
                 editing: false,
                 id: this.data.id,
                 body: this.data.body,
-                isBest: false,
+                isBest: this.data.is_best,
                 reply: this.data
             };
         },
@@ -62,6 +62,12 @@
             ago() {
                 return moment(this.data.created_at).fromNow() + '...'
             },
+        },
+
+        created() {
+            window.events.$on('best-reply-selected', id => {
+                this.isBest = (id === this.id)
+            })
         },
 
         methods: {
@@ -96,7 +102,9 @@
             },
 
             markBestReply() {
-                this.isBest = true;
+                axios.post('/replies/'+ this.data.id +'/best')
+
+                window.events.$emit('best-reply-selected', this.data.id)
             }
         }
 
