@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mt-3">
         <div v-if="signedIn">
             <div class="form-group">
                 <vue-tribute :options="options">

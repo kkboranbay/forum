@@ -35,7 +35,6 @@ Route::post('api/users/{user}/avatar', 'Api\UserAvatarController@store')->middle
 
 Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->name('register.confirm');
 
-
 Auth::routes();
 
 

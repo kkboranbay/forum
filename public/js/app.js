@@ -2360,6 +2360,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2371,7 +2375,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       editing: false,
       id: this.data.id,
-      body: this.data.body
+      body: this.data.body,
+      isBest: false
     };
   },
   computed: {
@@ -2408,6 +2413,9 @@ __webpack_require__.r(__webpack_exports__);
     favorite: function favorite() {
       axios.post('/replies/' + this.data.id + '/favorites');
       flash('Favorited');
+    },
+    markBestReply: function markBestReply() {
+      this.isBest = true;
     }
   }
 });
@@ -56376,7 +56384,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "mt-3" }, [
     _vm.signedIn
       ? _c("div", [
           _c(
@@ -56595,11 +56603,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card-body mt-3", attrs: { id: "reply-" + _vm.id } },
+    {
+      staticClass: "card card-body mt-3",
+      class: _vm.isBest ? "card-body bg-success" : "card-body",
+      attrs: { id: "reply-" + _vm.id }
+    },
     [
       _c("div", { staticClass: "level" }, [
         _c("h6", { staticClass: "flex" }, [
           _c("a", {
+            staticClass: "ml-3",
             attrs: { href: "profiles/" + _vm.data.owner.name },
             domProps: { textContent: _vm._s(_vm.data.owner.name) }
           }),
@@ -56665,28 +56678,47 @@ var render = function() {
             })
       ]),
       _vm._v(" "),
-      _vm.canUpdate
-        ? _c("div", { staticClass: "card-footer level" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn-dark mr-2",
-                on: {
-                  click: function($event) {
-                    _vm.editing = true
+      _c("div", { staticClass: "card-footer level" }, [
+        _vm.canUpdate
+          ? _c("div", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn-dark mr-2",
+                  on: {
+                    click: function($event) {
+                      _vm.editing = true
+                    }
                   }
-                }
-              },
-              [_vm._v("Edit")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn-danger mr-2", on: { click: _vm.destroy } },
-              [_vm._v("Delete")]
-            )
-          ])
-        : _vm._e()
+                },
+                [_vm._v("Edit")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "btn-danger mr-2", on: { click: _vm.destroy } },
+                [_vm._v("Delete")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.isBest,
+                expression: "! isBest"
+              }
+            ],
+            staticClass: "btn-default mr-2 ml-a",
+            on: { click: _vm.markBestReply }
+          },
+          [_vm._v("Best reply?")]
+        )
+      ])
     ]
   )
 }

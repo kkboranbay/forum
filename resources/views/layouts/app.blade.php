@@ -45,6 +45,9 @@
         [v-cloak] {
             display: none;
         }
+        .ml-a {
+            margin-left: auto;
+        }
     </style>
 </head>
 <body>

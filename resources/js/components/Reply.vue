@@ -1,8 +1,8 @@
 <template>
-    <div :id="'reply-'+id" class="card-body mt-3">
+    <div :id="'reply-'+id" class="card card-body mt-3" :class="isBest ? 'card-body bg-success' : 'card-body'">
         <div class="level">
             <h6 class="flex">
-                <a :href="'profiles/'+data.owner.name" v-text="data.owner.name"></a> said
+                <a :href="'profiles/'+data.owner.name" v-text="data.owner.name" class="ml-3"></a> said
                 <span v-text="ago"></span>
             </h6>
 
@@ -26,9 +26,13 @@
         </div>
 
 
-        <div class="card-footer level" v-if="canUpdate">
-            <button class="btn-dark mr-2" @click="editing = true">Edit</button>
-            <button class="btn-danger mr-2" @click="destroy">Delete</button>
+        <div class="card-footer level">
+            <div v-if="canUpdate">
+                <button class="btn-dark mr-2" @click="editing = true">Edit</button>
+                <button class="btn-danger mr-2" @click="destroy">Delete</button>
+            </div>
+
+            <button class="btn-default mr-2 ml-a" @click="markBestReply" v-show="! isBest">Best reply?</button>
         </div>
     </div>
 </template>
@@ -48,7 +52,8 @@
             return {
                 editing: false,
                 id: this.data.id,
-                body: this.data.body
+                body: this.data.body,
+                isBest: false
             };
         },
 
@@ -93,6 +98,10 @@
                 axios.post('/replies/' + this.data.id + '/favorites');
 
                 flash('Favorited');
+            },
+
+            markBestReply() {
+                this.isBest = true;
             }
         }
 
