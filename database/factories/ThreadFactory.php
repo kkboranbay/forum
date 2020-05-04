@@ -17,6 +17,7 @@ $factory->define(Thread::class, function (Faker $faker) {
         },
         'title' => $title,
         'body'  => $faker->paragraph,
-        'slug'  => \Illuminate\Support\Str::slug($title)
+        'slug'  => \Illuminate\Support\Str::slug($title),
+        'locked'=> false
     ];
 });
