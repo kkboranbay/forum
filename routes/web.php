@@ -17,7 +17,7 @@ Route::get('threads/{channel}/{thread}/replies', 'ReplyController@index');
 Route::get('threads/{channel}', 'ThreadController@index');
 Route::post('replies/{reply}/favorites', 'FavoriteController@store');
 Route::delete('replies/{reply}/favorites', 'FavoriteController@destroy');
-Route::delete('replies/{reply}', 'ReplyController@destroy');
+Route::delete('replies/{reply}', 'ReplyController@destroy')->name('reply.destroy');
 
 Route::post('replies/{reply}/best', 'BestReplyController@store')->name('best-reply.store');
 
