@@ -19,6 +19,9 @@ Route::post('replies/{reply}/favorites', 'FavoriteController@store');
 Route::delete('replies/{reply}/favorites', 'FavoriteController@destroy');
 Route::delete('replies/{reply}', 'ReplyController@destroy')->name('reply.destroy');
 
+Route::post('locked-threads/{thread}', 'LockedThreadController@store')->name('locked_thread.store')->middleware('admin');
+
+
 Route::post('replies/{reply}/best', 'BestReplyController@store')->name('best-reply.store');
 
 Route::patch('replies/{reply}', 'ReplyController@update');
