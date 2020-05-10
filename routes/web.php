@@ -20,6 +20,7 @@ Route::delete('replies/{reply}/favorites', 'FavoriteController@destroy');
 Route::delete('replies/{reply}', 'ReplyController@destroy')->name('reply.destroy');
 
 Route::post('locked-threads/{thread}', 'LockedThreadController@store')->name('locked_thread.store')->middleware('admin');
+Route::delete('locked-threads/{thread}', 'LockedThreadController@destroy')->name('locked_thread.destroy')->middleware('admin');
 
 
 Route::post('replies/{reply}/best', 'BestReplyController@store')->name('best-reply.store');

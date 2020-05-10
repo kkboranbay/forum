@@ -32,6 +32,10 @@ class Thread extends Model
         });
     }
 
+    protected $casts = [
+        'locked' => 'boolean'
+    ];
+
     public function path()
     {
         return "/threads/{$this->channel->slug}/{$this->slug}";
@@ -132,10 +136,5 @@ class Thread extends Model
     public function markBestReply(Reply $reply)
     {
         $this->update(['best_reply_id' => $reply->id]);
-    }
-
-    public function lock()
-    {
-        $this->update(['locked' => true]);
     }
 }
