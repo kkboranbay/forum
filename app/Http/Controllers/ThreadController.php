@@ -7,6 +7,7 @@ use App\Filters\ThreadFilters;
 use App\Thread;
 use App\Trending;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ThreadController extends Controller
 {
@@ -61,6 +62,16 @@ class ThreadController extends Controller
             'body'  => 'required|spamfree',
             'channel_id' => 'required|exists:channels,id'
         ]);
+
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret'   => config('services.recaptcha.secret'),
+            'response' => $request->recaptcha,
+            'remoteip' => $_SERVER['REMOTE_ADDR'],
+        ]);
+
+        if (! $response->json()['success']) {
+            throw new \Exception('Recaptcha failed');
+        }
 
         $thread = Thread::create([
             'user_id'    => auth()->id(),

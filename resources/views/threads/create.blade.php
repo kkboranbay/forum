@@ -35,6 +35,10 @@
                             </div>
 
                             <div class="form-group">
+                                <input type="hidden" name="recaptcha" id="recaptcha">
+                            </div>
+
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Publish</button>
                             </div>
 
@@ -46,6 +50,19 @@
                                 </ul>
                             @endif
                         </form>
+
+                        <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site') }}"></script>
+                        <script>
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('{{ config('services.recaptcha.site') }}', {action: 'homepage'})
+                                    .then(function(token) {
+                                        if (token) {
+                                            document.getElementById('recaptcha').value = token
+                                        }
+                                    });
+                            });
+                        </script>
+
                     </div>
                 </div>
             </div>
