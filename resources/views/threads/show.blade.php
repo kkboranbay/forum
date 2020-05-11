@@ -57,7 +57,7 @@
                             <button
                                     class="btn"
                                     v-if="authorize('isAdmin')"
-                                    @click="lock"
+                                    @click="toggleLock"
                                     v-text="locked ? 'Unlock' : 'Lock'"></button>
                         </p>
 
