@@ -65,7 +65,7 @@ class ThreadController extends Controller
 
         $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
             'secret'   => config('services.recaptcha.secret'),
-            'response' => $request->recaptcha,
+            'response' => $request->input('g-recaptcha-response'),
             'remoteip' => $_SERVER['REMOTE_ADDR'],
         ]);
 

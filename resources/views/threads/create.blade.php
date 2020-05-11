@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -35,7 +39,7 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="hidden" name="recaptcha" id="recaptcha">
+                                <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site') }}"></div>
                             </div>
 
                             <div class="form-group">
@@ -50,18 +54,6 @@
                                 </ul>
                             @endif
                         </form>
-
-                        <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site') }}"></script>
-                        <script>
-                            grecaptcha.ready(function() {
-                                grecaptcha.execute('{{ config('services.recaptcha.site') }}', {action: 'homepage'})
-                                    .then(function(token) {
-                                        if (token) {
-                                            document.getElementById('recaptcha').value = token
-                                        }
-                                    });
-                            });
-                        </script>
 
                     </div>
                 </div>
