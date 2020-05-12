@@ -42,6 +42,9 @@
         .flex {
             flex: 1;
         }
+        .level-item {
+            margin-right: 1em;
+        }
         [v-cloak] {
             display: none;
         }
