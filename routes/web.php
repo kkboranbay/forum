@@ -43,5 +43,7 @@ Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->na
 
 Auth::routes();
 
+Route::view('scan', 'scan');
+
 
 
