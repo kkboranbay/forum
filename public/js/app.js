@@ -7667,6 +7667,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var algoliasearch_lite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! algoliasearch/lite */ "./node_modules/algoliasearch/dist/algoliasearch-lite.umd.js");
 /* harmony import */ var algoliasearch_lite__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(algoliasearch_lite__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var instantsearch_js_es_lib_routers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! instantsearch.js/es/lib/routers */ "./node_modules/instantsearch.js/es/lib/routers/index.js");
+/* harmony import */ var instantsearch_js_es_lib_stateMappings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! instantsearch.js/es/lib/stateMappings */ "./node_modules/instantsearch.js/es/lib/stateMappings/index.js");
 //
 //
 //
@@ -7684,12 +7686,78 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ // we’re using the router from instantsearch.js. You need to add instantsearch.js to your project dependencies along with vue-instantsearch
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['trending'],
   data: function data() {
     return {
-      searchClient: algoliasearch_lite__WEBPACK_IMPORTED_MODULE_0___default()("EQKK03IZWT", "a73c4c13e6cb2b4e7779d49bda921523")
+      searchClient: algoliasearch_lite__WEBPACK_IMPORTED_MODULE_0___default()("EQKK03IZWT", "a73c4c13e6cb2b4e7779d49bda921523"),
+      // Vue InstantSearch provides a basic way to activate the browser URL synchronization with the routing option.
+      routing: {
+        router: Object(instantsearch_js_es_lib_routers__WEBPACK_IMPORTED_MODULE_1__["history"])(),
+        stateMapping: Object(instantsearch_js_es_lib_stateMappings__WEBPACK_IMPORTED_MODULE_2__["simple"])()
+      }
     };
+  },
+  computed: {
+    hasTrendingThreads: function hasTrendingThreads() {
+      return this.trending.length !== 0;
+    }
   }
 });
 
@@ -20566,6 +20634,38 @@ function () {
 
   return _construct(BrowserHistory, args);
 });
+
+/***/ }),
+
+/***/ "./node_modules/instantsearch.js/es/lib/routers/index.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/instantsearch.js/es/lib/routers/index.js ***!
+  \***************************************************************/
+/*! exports provided: history */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _history__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./history */ "./node_modules/instantsearch.js/es/lib/routers/history.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "history", function() { return _history__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+
+
+/***/ }),
+
+/***/ "./node_modules/instantsearch.js/es/lib/stateMappings/index.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/instantsearch.js/es/lib/stateMappings/index.js ***!
+  \*********************************************************************/
+/*! exports provided: simple */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _simple__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./simple */ "./node_modules/instantsearch.js/es/lib/stateMappings/simple.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "simple", function() { return _simple__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+
 
 /***/ }),
 
@@ -86314,36 +86414,153 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "ais-instant-search",
-    { attrs: { "search-client": _vm.searchClient, "index-name": "threads" } },
+    {
+      attrs: {
+        "search-client": _vm.searchClient,
+        "index-name": "threads",
+        routing: _vm.routing
+      }
+    },
     [
-      _c("ais-refinement-list", { attrs: { attribute: "channel.name" } }),
-      _vm._v(" "),
-      _c("ais-search-box"),
-      _vm._v(" "),
-      _c("ais-hits", {
-        scopedSlots: _vm._u([
-          {
-            key: "item",
-            fn: function(ref) {
-              var item = ref.item
-              return _c("div", {}, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-8" },
+          [
+            _c("ais-hits", {
+              scopedSlots: _vm._u([
+                {
+                  key: "item",
+                  fn: function(ref) {
+                    var item = ref.item
+                    return _c("div", {}, [
+                      _c(
+                        "a",
+                        { attrs: { href: item.path } },
+                        [
+                          _c("ais-highlight", {
+                            attrs: { hit: item, attribute: "title" }
+                          })
+                        ],
+                        1
+                      )
+                    ])
+                  }
+                }
+              ])
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-4" }, [
+          _c("div", { staticClass: "card" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v("\n                    Search threads\n                ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "card-body" },
+              [
+                _c("ais-search-box", {
+                  scopedSlots: _vm._u([
+                    {
+                      key: "default",
+                      fn: function(ref) {
+                        var currentRefinement = ref.currentRefinement
+                        var isSearchStalled = ref.isSearchStalled
+                        var refine = ref.refine
+                        return _c("div", {}, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: currentRefinement,
+                                expression: "currentRefinement"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "search",
+                              placeholder: "Search threads ...",
+                              autofocus: ""
+                            },
+                            domProps: { value: currentRefinement },
+                            on: {
+                              input: [
+                                function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  currentRefinement = $event.target.value
+                                },
+                                function($event) {
+                                  return refine($event.currentTarget.value)
+                                }
+                              ]
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { attrs: { hidden: !isSearchStalled } }, [
+                            _vm._v("Loading...")
+                          ])
+                        ])
+                      }
+                    }
+                  ])
+                })
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v(
+                "\n                    Filter by channel\n                "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "card-body" },
+              [
+                _c("ais-refinement-list", {
+                  attrs: { attribute: "channel.name" }
+                })
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _vm.hasTrendingThreads
+            ? _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-header" }, [
+                  _vm._v(
+                    "\n                    Trending threads\n                "
+                  )
+                ]),
+                _vm._v(" "),
                 _c(
-                  "a",
-                  { attrs: { href: item.path } },
-                  [
-                    _c("ais-highlight", {
-                      attrs: { hit: item, attribute: "title" }
-                    })
-                  ],
-                  1
+                  "div",
+                  { staticClass: "card-body" },
+                  _vm._l(this.trending, function(trending) {
+                    return _c("li", { staticClass: "list-group-item" }, [
+                      _c("a", {
+                        attrs: { href: trending.path },
+                        domProps: { textContent: _vm._s(trending.title) }
+                      })
+                    ])
+                  }),
+                  0
                 )
               ])
-            }
-          }
+            : _vm._e()
         ])
-      })
-    ],
-    1
+      ])
+    ]
   )
 }
 var staticRenderFns = []

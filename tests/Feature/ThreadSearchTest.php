@@ -25,7 +25,7 @@ class ThreadSearchTest extends TestCase
 //             Account for latency.
             sleep(.25);
 
-            $results = $this->getJson('/threads/search?q=foobar')->json()['data'];
+            $results = $this->getJson('/threads/search?query=foobar')->json()['data'];
         } while (count($results) != 2);
 
         $this->assertCount(2, $results);
