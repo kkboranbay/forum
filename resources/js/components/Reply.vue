@@ -15,14 +15,14 @@
             <div class="card-body" v-if="editing">
                 <form @submit="update">
                     <div class="form-group">
-                        <textarea class="form-control" v-model="body" required></textarea>
+                        <wysiwyg v-model="body"></wysiwyg>
                     </div>
                     <button class="btn-success small">Update</button>
                     <button class="btn small" @click="editing=false" type="button">Cancel</button>
                 </form>
             </div>
 
-            <div class="card-body" v-else v-text="body"></div>
+            <div class="card-body" v-else v-html="body"></div>
         </div>
 
         <div class="card-footer level" v-if="authorize('owns', reply) || authorize('owns', reply.thread)">

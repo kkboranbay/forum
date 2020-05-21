@@ -7373,7 +7373,8 @@ __webpack_require__.r(__webpack_exports__);
         },
         lookup: 'name',
         fillAttr: 'name'
-      }
+      },
+      completed: false
     };
   },
   methods: {
@@ -7387,6 +7388,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (_ref) {
         var data = _ref.data;
         _this.body = '';
+        _this.completed = true;
         flash('Your reply has been posted.');
 
         _this.$emit('created', data);
@@ -7833,12 +7835,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['name', 'value'],
+  props: ['name', 'value', 'placeholder', 'shouldClear'],
   mounted: function mounted() {
     var _this = this;
 
     this.$refs.trix.addEventListener('trix-change', function (e) {
       _this.$emit('input', e.target.innerHTML);
+    });
+    this.$watch('shouldClear', function () {
+      _this.$refs.trix.value = '';
     });
   }
 });
@@ -86089,35 +86094,22 @@ var render = function() {
             "div",
             { staticClass: "form-group" },
             [
-              _c("vue-tribute", { attrs: { options: _vm.options } }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.body,
-                      expression: "body"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    name: "body",
-                    rows: "5",
-                    id: "body",
-                    required: "",
-                    placeholder: "Having something to say"
+              _c("vue-tribute", { attrs: { options: _vm.options } }),
+              _vm._v(" "),
+              _c("wysiwyg", {
+                attrs: {
+                  name: "body",
+                  placeholder: "Having something to say?",
+                  shouldClear: _vm.completed
+                },
+                model: {
+                  value: _vm.body,
+                  callback: function($$v) {
+                    _vm.body = $$v
                   },
-                  domProps: { value: _vm.body },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.body = $event.target.value
-                    }
-                  }
-                })
-              ])
+                  expression: "body"
+                }
+              })
             ],
             1
           ),
@@ -86333,29 +86325,22 @@ var render = function() {
         _vm.editing
           ? _c("div", { staticClass: "card-body" }, [
               _c("form", { on: { submit: _vm.update } }, [
-                _c("div", { staticClass: "form-group" }, [
-                  _c("textarea", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
+                _c(
+                  "div",
+                  { staticClass: "form-group" },
+                  [
+                    _c("wysiwyg", {
+                      model: {
                         value: _vm.body,
+                        callback: function($$v) {
+                          _vm.body = $$v
+                        },
                         expression: "body"
                       }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { required: "" },
-                    domProps: { value: _vm.body },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.body = $event.target.value
-                      }
-                    }
-                  })
-                ]),
+                    })
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c("button", { staticClass: "btn-success small" }, [
                   _vm._v("Update")
@@ -86378,7 +86363,7 @@ var render = function() {
             ])
           : _c("div", {
               staticClass: "card-body",
-              domProps: { textContent: _vm._s(_vm.body) }
+              domProps: { innerHTML: _vm._s(_vm.body) }
             })
       ]),
       _vm._v(" "),
@@ -86723,7 +86708,10 @@ var render = function() {
         domProps: { value: _vm.value }
       }),
       _vm._v(" "),
-      _c("trix-editor", { ref: "trix", attrs: { input: "x" } })
+      _c("trix-editor", {
+        ref: "trix",
+        attrs: { input: "x", placeholder: _vm.placeholder }
+      })
     ],
     1
   )
@@ -99913,15 +99901,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************************************!*\
   !*** ./resources/js/components/Wysiwyg.vue ***!
   \*********************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Wysiwyg_vue_vue_type_template_id_25ef60f2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Wysiwyg.vue?vue&type=template&id=25ef60f2& */ "./resources/js/components/Wysiwyg.vue?vue&type=template&id=25ef60f2&");
 /* harmony import */ var _Wysiwyg_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Wysiwyg.vue?vue&type=script&lang=js& */ "./resources/js/components/Wysiwyg.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Wysiwyg_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Wysiwyg_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -99951,7 +99938,7 @@ component.options.__file = "resources/js/components/Wysiwyg.vue"
 /*!**********************************************************************!*\
   !*** ./resources/js/components/Wysiwyg.vue?vue&type=script&lang=js& ***!
   \**********************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

@@ -3,14 +3,14 @@
         <div v-if="signedIn">
             <div class="form-group">
                 <vue-tribute :options="options">
-                    <textarea name="body"
-                              rows="5"
-                              id="body"
-                              class="form-control"
-                              required
-                              v-model="body"
-                              placeholder="Having something to say"></textarea>
+                    <!--wysiwyg with vue-tribute doesn't work-->
                 </vue-tribute>
+
+                <!--About placeholder
+                    When we have a custom component (wysiwyg)
+                    any prop you pass (placeholder) if not excepted as props on the component
+                    then this prop will be assigned to the top level element-->
+                <wysiwyg name="body" v-model="body" placeholder="Having something to say?" :shouldClear="completed"></wysiwyg>
             </div>
 
             <button class="btn btn-primary"
@@ -50,7 +50,8 @@
                     },
                     lookup: 'name',
                     fillAttr: 'name',
-                }
+                },
+                completed: false
             }
         },
 
@@ -64,6 +65,8 @@
                     })
                     .then(({data}) => {
                         this.body = ''
+
+                        this.completed = true
 
 
                         flash('Your reply has been posted.')

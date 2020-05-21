@@ -7,9 +7,10 @@
     </div>
 
     <div class="card-body">
-        <wysiwyg :value="form.body" v-model="form.body"></wysiwyg>
-
-        {{--<textarea class="form-control" rows="10" v-model="form.body"></textarea>--}}
+        {{--<wysiwyg v-model="form.body"></wysiwyg>--}}
+        {{--equals the following line--}}
+        {{--<wysiwyg :value="form.body" @input="form.body = $event.target.value"></wysiwyg>--}}
+        <wysiwyg v-model="form.body"></wysiwyg>
     </div>
 
     <div class="card-footer">
