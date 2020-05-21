@@ -44,6 +44,7 @@ Vue.component('paginator', require('./components/Paginator.vue').default);
 Vue.component('user-notification', require('./components/UserNotification.vue').default);
 Vue.component('avatar-form', require('./components/AvatarForm.vue').default);
 Vue.component('thread-search', require('./components/ThreadSearch.vue').default);
+Vue.component('wysiwyg', require('./components/Wysiwyg.vue').default);
 
 
 /**
