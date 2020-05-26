@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
+use Stevebauman\Purify\Purify;
 
 class Thread extends Model
 {
@@ -142,5 +143,11 @@ class Thread extends Model
     public function toSearchableArray()
     {
         return $this->toArray() + ['path' => $this->path()];
+    }
+
+    public function getBodyAttribute($body)
+    {
+        //<a href="#" onclick="alert('kaka')"></a>
+        return \Purify::clean($body);
     }
 }
